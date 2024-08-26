@@ -15,7 +15,7 @@ Args:
 """
 class StressStraineCurve:
     def __init__(
-        self, sigma_ys: float, sigma_uts: float, Ey: float, m2: float, epsilon_p: float, sigma_t_step: int = 10
+        self, sigma_ys: float, sigma_uts: float, Ey: float, m2: float, epsilon_p: float, delta_sigma_t: int = 10
     ) -> None:
         self.σ_ys = sigma_ys
         self.σ_uts = sigma_uts
@@ -23,7 +23,7 @@ class StressStraineCurve:
         self.m2 = m2
         self.ε_p = epsilon_p
         self.ε_ys = 0.002
-        self.sigma_t_step = sigma_t_step
+        self.delta_sigma_t = delta_sigma_t
 
     def R(self) -> float:
         """
@@ -124,8 +124,8 @@ class StressStraineCurve:
         true_stress = [0.0]
         true_strain = [0.0]
     
-        while current_sigma_t < (self.sigma_uts_t() - self.sigma_t_step):
-            current_sigma_t += self.sigma_t_step
+        while current_sigma_t < (self.sigma_uts_t() - self.delta_sigma_t):
+            current_sigma_t += self.delta_sigma_t
             true_stress.append(current_sigma_t)
             true_strain.append(self.epsilon_t(current_sigma_t))
         true_stress.append(self.sigma_uts_t())
