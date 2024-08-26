@@ -114,6 +114,10 @@ class StressStraineCurve:
         pass
 
     def compute(self) -> tuple[list[float], list[float]]:
+        """
+        Returns:
+            tuple[list[float], list[float]]: returns tuple containing two lists. The first list contains true stress, the second true strain.
+        """
         current_sigma_t = 0.0
         true_stress = [0.0]
         true_strain = [0.0]
