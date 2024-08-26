@@ -8,8 +8,6 @@ Ey - modulus of elasticity evaluated at the temperature of interest,
 m 2 - curve fitting exponent for the stress–strain curve equal to the true strain at the true ultimate stress,
 ɛ_p - stress–strain curve fitting parameter
 """
-
-
 class StressStraineCurve:
     def __init__(
         self, sigma_ys: float, sigma_uts: float, Ey: float, m2: float, ε_p: float, sigma_t_step: int = 10
@@ -131,5 +129,5 @@ class StressStraineCurve:
         """
         gamma_1 = self.gamma_1(sigma_t)
         gamma_2 = self.gamma_2(sigma_t)
-        
-        return 10.0
+        #TODO calculate 'Total true strain'
+        pass
