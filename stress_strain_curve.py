@@ -1,4 +1,5 @@
 import math
+import csv
 
 import matplotlib.pyplot as plt
 
@@ -113,7 +114,17 @@ class StressStraineCurve:
         return (self.epsilon_2(sigma_t) / 2) * (1.0 + math.tanh(self.H(sigma_t)))
     
     def to_csv(self):
-        pass
+        """
+        Save stress–strain curve to csv file.
+        """
+        fields = ["true_stress", "true_strain"]
+        true_stresses, true_strains  = self.compute()
+        filename = "stress_strain_curve.csv"
+        with open(filename, 'w') as csvfile:
+            csvwriter = csv.writer(csvfile, delimiter=",")
+            csvwriter.writerow(fields)
+            for true_stress, true_strain in zip(true_stresses, true_strains):
+                csvwriter.writerow([true_stress, true_strain])
 
     def compute(self) -> tuple[list[float], list[float]]:
         """

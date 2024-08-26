@@ -18,8 +18,8 @@ def main():
         epsilon_p=epsilon_p,
         m2=m2,
         )
+    stress_strain_curve.to_csv()
     stress_strain_curve.show()
-
 
 if __name__ == "__main__":
     main()
