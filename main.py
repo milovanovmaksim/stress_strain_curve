@@ -18,8 +18,5 @@ def main():
     stress_strain_curve.compute()
 
 
-
-
-
 if __name__ == "__main__":
     main()
