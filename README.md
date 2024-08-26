@@ -1,1 +1,1 @@
-Calculate stress–strain curve base on ASME Boiler and pressure vessel code, Section VIII, Division 2, 2015 – Rules for construction of pressure vessels, ANNEX 3-D.
+Calculate stress–strain curve base on 'ASME Boiler and pressure vessel code, Section VIII, Division 2, 2015 – Rules for construction of pressure vessels, ANNEX 3-D'.
