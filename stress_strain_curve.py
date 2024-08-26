@@ -1,5 +1,7 @@
 import math
 
+import matplotlib.pyplot as plt
+
 """
 Calculate stress–strain curve base on 'ASME Boiler and pressure vessel code, Section VIII, Division 2, 2015 – Rules for construction of pressure vessels, ANNEX 3-D'.
 
@@ -51,7 +53,7 @@ class StressStraineCurve:
         """
         Curve fitting constant for the plastic region of the stress–strain curve.
         """
-        return (self.σ_uts * math.exp(self.m2)) / self.m2**self.m2
+        return (self.σ_uts * math.exp(self.m2)) / self.m2 ** self.m2
 
     def epsilon_2(self, sigma_t: float) -> float:
         """
@@ -66,7 +68,7 @@ class StressStraineCurve:
         """
         True ultimate tensile stress evaluated at the true ultimate tensile strain.
         """
-        return self.σ_uts * math.exp(self.m2)
+        return round(self.σ_uts * math.exp(self.m2), 2)
 
     def m1(self) -> float:
         """
@@ -126,6 +128,8 @@ class StressStraineCurve:
             current_sigma_t += self.sigma_t_step
             true_stress.append(current_sigma_t)
             true_strain.append(self.epsilon_t(current_sigma_t))
+        true_stress.append(self.sigma_uts_t())
+        true_strain.append(self.epsilon_t(self.sigma_uts_t()))
 
         return (true_stress, true_strain)
     
@@ -139,5 +143,15 @@ class StressStraineCurve:
         gamma_1 = self.gamma_1(sigma_t)
         gamma_2 = self.gamma_2(sigma_t)
         if gamma_1 + gamma_2 <= self.ε_p:
-            return sigma_t / self.Ey
-        return (sigma_t / self.Ey) + gamma_1 + gamma_2
+            return round(sigma_t / self.Ey, 4)
+        
+        return round((sigma_t / self.Ey) + gamma_1 + gamma_2, 4)
+    
+    def show(self):
+        result = self.compute()
+        fig, ax = plt.subplots()
+        ax.plot(result[1], result[0])
+        ax.grid(True, linestyle='-.')
+        ax.tick_params(labelsize='medium', width=3)
+        fig.savefig("stress_strain_curve.png")
+        plt.show()
