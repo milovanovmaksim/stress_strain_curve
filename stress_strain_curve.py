@@ -138,6 +138,6 @@ class StressStraineCurve:
         """
         gamma_1 = self.gamma_1(sigma_t)
         gamma_2 = self.gamma_2(sigma_t)
-        if gamma_1 + gamma_2 < self.ε_p:
+        if gamma_1 + gamma_2 <= self.ε_p:
             return sigma_t / self.Ey
         return (sigma_t / self.Ey) + gamma_1 + gamma_2
