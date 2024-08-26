@@ -9,17 +9,17 @@ Args:
     Ey - modulus of elasticity evaluated at the temperature of interest,
     ε_ys - 0.2% engineering offset strain,
     m 2 - curve fitting exponent for the stress–strain curve equal to the true strain at the true ultimate stress,
-    ɛ_p - stress–strain curve fitting parameter.
+    epsilon_p - stress–strain curve fitting parameter.
 """
 class StressStraineCurve:
     def __init__(
-        self, sigma_ys: float, sigma_uts: float, Ey: float, m2: float, ε_p: float, sigma_t_step: int = 10
+        self, sigma_ys: float, sigma_uts: float, Ey: float, m2: float, epsilon_p: float, sigma_t_step: int = 10
     ) -> None:
         self.σ_ys = sigma_ys
         self.σ_uts = sigma_uts
         self.Ey = Ey
         self.m2 = m2
-        self.ε_p = ε_p
+        self.ε_p = epsilon_p
         self.ε_ys = 0.002
         self.sigma_t_step = sigma_t_step
 
@@ -114,14 +114,16 @@ class StressStraineCurve:
         pass
 
     def compute(self) -> tuple[list[float], list[float]]:
-        current_sigma_t = 0
-        sigma_t = [0]
-        epsilon_t = [0]
+        current_sigma_t = 0.0
+        true_stress = [0.0]
+        true_strain = [0.0]
     
         while current_sigma_t < (self.sigma_uts_t() - self.sigma_t_step):
             current_sigma_t += self.sigma_t_step
+            true_stress.append(current_sigma_t)
+            true_strain.append(self.epsilon_t(current_sigma_t))
 
-        return ([1.0], [1.0])
+        return (true_stress, true_strain)
     
     def epsilon_t(self, sigma_t: float) -> float:
         """
@@ -132,5 +134,6 @@ class StressStraineCurve:
         """
         gamma_1 = self.gamma_1(sigma_t)
         gamma_2 = self.gamma_2(sigma_t)
-        #TODO calculate 'Total true strain'
-        pass
+        if gamma_1 + gamma_2 < self.ε_p:
+            return sigma_t / self.Ey
+        return (sigma_t / self.Ey) + gamma_1 + gamma_2
