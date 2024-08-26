@@ -1,12 +1,15 @@
 import math
 
 """
-σ_ys - engineering yield stress evaluated at the temperature of interest,
-σ_uts - engineering ultimate tensile stress evaluated at the temperature of interest,
-Ey - modulus of elasticity evaluated at the temperature of interest,
-ε_ys - 0.2% engineering offset strain,
-m 2 - curve fitting exponent for the stress–strain curve equal to the true strain at the true ultimate stress,
-ɛ_p - stress–strain curve fitting parameter
+Calculate stress–strain curve base on 'ASME Boiler and pressure vessel code, Section VIII, Division 2, 2015 – Rules for construction of pressure vessels, ANNEX 3-D'.
+
+Args:
+    σ_ys - engineering yield stress evaluated at the temperature of interest,
+    σ_uts - engineering ultimate tensile stress evaluated at the temperature of interest,
+    Ey - modulus of elasticity evaluated at the temperature of interest,
+    ε_ys - 0.2% engineering offset strain,
+    m 2 - curve fitting exponent for the stress–strain curve equal to the true strain at the true ultimate stress,
+    ɛ_p - stress–strain curve fitting parameter.
 """
 class StressStraineCurve:
     def __init__(
@@ -76,13 +79,13 @@ class StressStraineCurve:
 
     def A1(self) -> float:
         """
-        curve fitting constant for the elastic region of the stress–strain curve
+        Curve fitting constant for the elastic region of the stress–strain curve.
         """
         return (self.σ_ys * (1 + self.ε_ys)) / (math.log10(1 + self.ε_ys)) ** self.m1()
 
     def epsilon_1(self, sigma_t: float) -> float:
         """
-        True plastic strain in the micro-strain region of the stress–strain curve
+        True plastic strain in the micro-strain region of the stress–strain curve.
 
         Args:
             sigma_t (float): смотри описание этого аргумента в функции  StressStraineCurve.H().
@@ -91,7 +94,7 @@ class StressStraineCurve:
     
     def gamma_1(self, sigma_t: float) -> float:
         """
-        True strain in the micro-strain region of the stress–strain curve
+        True strain in the micro-strain region of the stress–strain curve.
 
         Args:
             sigma_t (float): смотри описание этого аргумента в функции  StressStraineCurve.H().
@@ -100,7 +103,7 @@ class StressStraineCurve:
     
     def gamma_2(self, sigma_t: float) -> float:
         """
-        True plastic strain in the macro-strain region of the stress–strain curve
+        True plastic strain in the macro-strain region of the stress–strain curve.
 
         Args:
             sigma_t (float): смотри описание этого аргумента в функции  StressStraineCurve.H().
@@ -122,7 +125,7 @@ class StressStraineCurve:
     
     def epsilon_t(self, sigma_t: float) -> float:
         """
-        Total true strain
+        Total true strain.
 
         Args:
             sigma_t (float): смотри описание этого аргумента в функции  StressStraineCurve.H().
