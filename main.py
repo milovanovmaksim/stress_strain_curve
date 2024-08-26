@@ -1,4 +1,4 @@
-from stress_strain_cuve import StressStraineCurve
+from stress_strain_curve import StressStraineCurve
 
 
 def main():
