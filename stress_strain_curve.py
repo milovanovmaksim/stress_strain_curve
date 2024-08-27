@@ -162,6 +162,7 @@ class StressStraineCurve:
         true_stress, true_strain  = self.compute()
         fig, ax = plt.subplots()
         ax.plot(true_strain, true_stress)
+        ax.set(xlabel='True straine (mm/mm)', ylabel='True stress')
         ax.grid(True, linestyle='-.')
         ax.tick_params(labelsize='medium', width=3)
         fig.savefig("stress_strain_curve.png")
