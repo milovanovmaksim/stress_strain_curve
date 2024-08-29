@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 Calculate stress–strain curve base on 'ASME Boiler and pressure vessel code, Section VIII, Division 2, 2015 – Rules for construction of pressure vessels, ANNEX 3-D'.
 
 Args:
-    σ_ys - engineering yield stress evaluated at the temperature of interest,
-    σ_uts - engineering ultimate tensile stress evaluated at the temperature of interest,
+    sigma_ys - engineering yield stress evaluated at the temperature of interest,
+    sigma_uts - engineering ultimate tensile stress evaluated at the temperature of interest,
     Ey - modulus of elasticity evaluated at the temperature of interest,
     ε_ys - 0.2% engineering offset strain,
     m 2 - curve fitting exponent for the stress–strain curve equal to the true strain at the true ultimate stress,
@@ -18,8 +18,8 @@ class StressStraineCurve:
     def __init__(
         self, sigma_ys: float, sigma_uts: float, Ey: float, m2: float, epsilon_p: float, delta_sigma_t: int = 10
     ) -> None:
-        self.σ_ys = sigma_ys
-        self.σ_uts = sigma_uts
+        self.sigma_ys = sigma_ys
+        self.sigma_uts = sigma_uts
         self.Ey = Ey
         self.m2 = m2
         self.ε_p = epsilon_p
@@ -30,7 +30,7 @@ class StressStraineCurve:
         """
         Engineering yield to engineering tensile ratio.
         """
-        return self.σ_ys / self.σ_uts
+        return self.sigma_ys / self.sigma_uts
 
     def K(self) -> float:
         """
@@ -46,15 +46,15 @@ class StressStraineCurve:
             sigma_t (float): true stress at which the true strain will be evaluated, may be a membrane,
             membrane plus bending, or membrane, membrane plus bending plus peak stress depending on the application.
         """
-        return 2 * (sigma_t - (self.σ_ys + self.K() * (self.σ_uts - self.σ_ys))) / (
-            self.K() * (self.σ_uts - self.σ_ys)
+        return 2 * (sigma_t - (self.sigma_ys + self.K() * (self.sigma_uts - self.sigma_ys))) / (
+            self.K() * (self.sigma_uts - self.sigma_ys)
         )
 
     def A_2(self) -> float:
         """
         Curve fitting constant for the plastic region of the stress–strain curve.
         """
-        return (self.σ_uts * math.exp(self.m2)) / self.m2 ** self.m2
+        return (self.sigma_uts * math.exp(self.m2)) / self.m2 ** self.m2
 
     def epsilon_2(self, sigma_t: float) -> float:
         """
@@ -69,7 +69,7 @@ class StressStraineCurve:
         """
         True ultimate tensile stress evaluated at the true ultimate tensile strain.
         """
-        return round(self.σ_uts * math.exp(self.m2), 2)
+        return round(self.sigma_uts * math.exp(self.m2), 2)
 
     def m1(self) -> float:
         """
@@ -84,7 +84,7 @@ class StressStraineCurve:
         """
         Curve fitting constant for the elastic region of the stress–strain curve.
         """
-        return (self.σ_ys * (1 + self.ε_ys)) / (math.log10(1 + self.ε_ys)) ** self.m1()
+        return (self.sigma_ys * (1 + self.ε_ys)) / (math.log10(1 + self.ε_ys)) ** self.m1()
 
     def epsilon_1(self, sigma_t: float) -> float:
         """
@@ -156,7 +156,7 @@ class StressStraineCurve:
         if gamma_1 + gamma_2 <= self.ε_p:
             return round(sigma_t / self.Ey, 4)
         
-        return round((sigma_t / self.Ey) + gamma_1 + gamma_2, 4)
+        return round((sigma_t / self.Ey) + gamma_1 + gamma_2, 3)
     
     def show(self):
         true_stress, true_strain  = self.compute()
