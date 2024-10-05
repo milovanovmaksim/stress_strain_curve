@@ -19,7 +19,7 @@ def main():
         m2=m2,
         )
     stress_strain_curve.to_csv()
-    stress_strain_curve.show()
+    stress_strain_curve.show_curve()
 
 if __name__ == "__main__":
     main()
