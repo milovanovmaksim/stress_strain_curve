@@ -22,8 +22,8 @@ class StressStraineCurve:
         self.sigma_uts = sigma_uts
         self.Ey = Ey
         self.m2 = m2
-        self.ε_p = epsilon_p
-        self.ε_ys = 0.002
+        self.epsilon_p = epsilon_p
+        self.epsilon_ys = 0.002
         self.delta_sigma_t = delta_sigma_t
 
     def _R(self) -> float:
@@ -76,15 +76,15 @@ class StressStraineCurve:
         Curve fitting exponent for the stress–strain curve equal to the true strain
         at the proportional limit and the strain hardening coefficient in the large strain region.
         """
-        return (math.log10(self._R()) + (self.ε_p - self.ε_ys)) / (
-            math.log10((math.log10(1 + self.ε_p)) / (math.log10(1 + self.ε_ys)))
+        return (math.log10(self._R()) + (self.epsilon_p - self.epsilon_ys)) / (
+            math.log10((math.log10(1 + self.epsilon_p)) / (math.log10(1 + self.epsilon_ys)))
         )
 
     def _A1(self) -> float:
         """
         Curve fitting constant for the elastic region of the stress–strain curve.
         """
-        return (self.sigma_ys * (1 + self.ε_ys)) / (math.log10(1 + self.ε_ys)) ** self._m1()
+        return (self.sigma_ys * (1 + self.epsilon_ys)) / (math.log10(1 + self.epsilon_ys)) ** self._m1()
 
     def _epsilon_1(self, sigma_t: float) -> float:
         """
@@ -153,7 +153,7 @@ class StressStraineCurve:
         """
         gamma_1 = self._gamma_1(sigma_t)
         gamma_2 = self._gamma_2(sigma_t)
-        if gamma_1 + gamma_2 <= self.ε_p:
+        if gamma_1 + gamma_2 <= self.epsilon_p:
             return round(sigma_t / self.Ey, 4)
         
         return round((sigma_t / self.Ey) + gamma_1 + gamma_2, 3)
